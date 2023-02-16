@@ -1,0 +1,720 @@
+---
+title: "__Support Vector Machines (Destek Vetör Makineleri)__"
+subtitle: "_DSM 5007 Denetimli İstatistiksel Öğrenme 2. Ara Ödev_"
+author: "Fatih Emre Öztürk, Gökhan Acisulu, Veysel Karani Baris"
+institute: "DEÜ Fen Bilimleri Enstitüsü Veri Bilimi Yüksel Lisans Programı"
+date: "2023-01-03"
+output: 
+  beamer_presentation: 
+  theme: "Luebeck"
+  colortheme: "default" 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## **Destek Vektör Makinaları _(Support Vector Machines)_**
+
+Destek vektör makineleri hem sınıflandırma hem de regresyon analizlerinde kullanılabilmekle beraber en çok sınıflandırma işlemlerinde tercih edilmektedir. 
+
+Denetimli öğrenme modeline dayanmaktadır. 
+
+Çekirdek (Kernel) fonksiyonlar yardımıyla hem doğrusal hem de doğrusal olmayan sınıflandırmalar gerçekleştirebilmektedir. 
+
+## **Kullanım Alanları** 
+
+- Yüz Algılama _(Görüntünün bölümlerini yüz ve yüz olmayan bölümler şeklinde sınıflandırma)_
+
+- Metin Sınıflandırma _(Haber makalelerinin iş ve filmler şeklinde sınıflandırılması)_
+
+- Biyoinformatik _(Hastaların genlerine göre sınıflandırılması)_
+
+- Jeoloji ve Çevre Bilimleri _(Uygu görüntüleri üzerinden haritalama uygulamaları)_
+
+
+## **Support Vector Machines - *Kavramlar***
+
+-   Maximal margin classifier
+
+-   Support vector classifier
+
+-   Support vectors
+
+-   Support vector machine
+
+## **Maximal Margin Classifier - *Hyperplane-1***
+
+En kısa tanımla **Hyperplane** *p boyutlu* bir uzayın, *p-1 bir boyutlu* düz bir alt uzayıdır. Örneğin bizim uzayımız iki boyutlu ise hyperplane tek boyutlu düz bir (çizgi) yapısında olacaktır. Üç boyutlu bir uzayda ise Hyperplane iki boyutlu bir yapıda olaaktır.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/Hyperplane.png")
+
+```
+
+## **Maximal Margin Classifier - *Hyperplane-2***
+
+Hyperplane'nin denklemi;
+
+-   $\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p} = 0$
+
+Bir gözlem $X = (X_{1}, X_{2}, …..X_{p})$ değerleri yukarıdaki denklemde yerine konduğunda eğer eşitlik sağlanıyorsa (sonuç 0'a eşit oluyorsa) o gözlem hyperplane üzerinde yer alır.
+
+Eğer X'in değerine göre aşağıdaki denklem **0'dan büyükse** bir düzlemde;
+
+-   $\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p} > 0$
+
+Eğer **0'dan küçükse** diğer düzlemde yer alır.
+
+-   $\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p} < 0$
+
+## **Maximal Margin Classifier - *Hyperplane-3***
+
+Aşağıdaki şekilde yer alan hyperplane ait denklem 1 + 2X1 + 3X2 = 0'dır. Şekilde **mavi bölge** 1 + 2X1 + 3X2 \> 0, **mor bölge** ise 1 + 2X1 + 3X2 \< 0 denklemini sağlayan noktaları göstermektedir.
+
+```{r, warning=FALSE, out.width="100%", out.height="70%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/Hyperplane.png")
+
+
+```
+
+## **Maximal Margin Classifier - *Hyperplane-4***
+
+Mavi noktaların yi = 1 sınıfında, Mor noktaların ise yi = -1 sınıfında yer aldığını varsayalım.
+
+Buna göre y değerlerine göre denklemler aşağıdaki şekilde kurulabilir;
+
+-   $\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p} > 0$ / Eğer yi = 1 ise
+
+-   $\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p} < 0$ / Eğer yi = -1 ise
+
+Yukarıdaki iki denklemi aşağıdaki şekilde ayırmak mümkün;
+
+-   $y_{i}(\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p}) > 0$
+
+## **Maximal Margin Classifier**
+
+Verilerimiz eğer doğrusal bir hyperplane ile sınıflandırılmaya uygunsa birbirinden farklı sonsuz sayıda hyperplane belirleme ihtimalimiz olabilir.
+
+```{r, warning=FALSE, out.width="100%", out.height="70%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/maximal1.png")
+
+
+```
+
+## **Maximal Margin Classifier**
+
+*Optimal Hyperplane Karar Verme;*
+
+-   Farklı sınıflardaki gözlemlerden birbirine en yakın olan noktalardan, en uzak noktada olacak şekilde hyperplane belirlenir.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/maximal.png")
+
+```
+
+## **Maximal Margin Classifier**
+
+Eğer $\beta_{0}, \beta_{1}… \beta_{p}$ maximal margin hyperplane'nin katsayılarıysa test veri setinde yer alan x gözlemini $f(x) = \beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p}$ fonksiyonunun işaretine göre sınıflandırabiliriz. Bu durumda belirlediğimiz maximal margin hyperplane aynı zamanda **maximal margin classifier** olarak isimlendirilidir.
+
+## **Support Vectors (Destek Vektörleri)**
+
+Aşağıdaki incelendiğinde 3 adet gözlemin maximal margin hyperplane düzleminin üzerinde uç kenar sınırlarında yer aldığı görülmektedir. Bu gözlemlere **support vector** denilmektedir
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/maximal.png")
+
+```
+
+## **Support Vectors**
+
+Bu gözlemlere support vector denmesinin nedeni maximal marginal hyperplane'nin bu gözlemlere duyarlı olmasından *(bu gözlemler doğrultusunda oluşturulmuş olması)* kaynaklıdır. Eğer bu gözlemlerin konumları değişirse, maximal marginal hyperplanenin de konumu onlara bağlı olarak değişecektir.
+
+## **Maximal Margin Classifier'ın Belirlenmesi**
+
+Maximal margin classifier'ın belirlenmesi bir optimizasyon problemidir.
+
+-   $y_{i}(\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} + …..+ \beta_{p}X_{p}) \geq M$ / i = 1
+
+Yukarıdaki denklemde *M* margin'i ifade etmektedir. Biz mümkün olan en büyük margini elde etmek isteriz. Bu nedenle optimizasyon sürecinde de en büyük M'yi elde edebileceğimiz $\beta_{0} + \beta_{1}… \beta_{p}$ parametrelerine karar verilir.
+
+## **Support Vector Classifier**
+
+Doğrusal bir sınıflandırıcı ile sınıflandırılabilen veri setlerinde maximal margin classifier en iyi seçenektır. Ancak çoğu veri seti bu şekilde doğrusal bir sınıflandırıcı ile tam doğru bir şekilde sınıflandırılamayabilir.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_4.png")
+
+```
+
+## **Support Vector Classifier**
+
+Veriler mükemmel şekilde sınıflandırılmış olsa bile maximal margin classifier support vector'lere aşırı duyarlı olduğu için margin içerisine yeni bir gözlem eklenmesi durumunda hyperplane'de buna göre tekrar değişim gösterecektir.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_5.png")
+
+```
+
+## **Support Vector Classifier**
+
+Yaşanabilecek bu gibi sorunlar nedeniyle gerçek yaşam verilerinde gözlemleri tam doğru bir şekilde sınıflandırmak yerine;
+
+-   Bireysel gözlemlere karşı daha dayanılık (robust),
+
+-   Gözlemleri mümkün olan en doğru şekilde sınıflandırmayı hedeflemeliyiz.
+
+**Soft margin classifier** olarak da isimlendirilebilen **support vector classsifer** ta olarak bu işi yapmaktadır.
+
+## **Support Vector Classifier**
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_7.png")
+
+```
+
+## **Support Vector Classifier**
+
+Support vector classifier'da da ne kadar yanlış gözleme izin verileceği optimazasyon ile belirlenmektedir.
+
+```{r, warning=FALSE, out.width="100%", out.height="30%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_8.png")
+
+```
+
+Yukarıdaki optimizasyon problemi çalıştırıldığında;
+
+- eğer slack variable **$\epsilon = 0$** değerini alırsa gözlemin hyperplanenin doğru tarafında sınıflandırıldığı,
+
+- eğer **$\epsilon > 0$** değerini alırsa gözlemin marginin yanlış tarafında sınıflandırılığı,
+
+- eğer **$\epsilon > 1$** değerini alırsa gözlemin hyperplanenin yanlış tarafında sınıflandırıldığını gösterir.
+
+## **Support Vector Classifier**
+
+```{r, warning=FALSE, out.width="100%", out.height="40%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_8.png")
+
+```
+
+C parametresi $\epsilon$ slack variable'ların toplamını sınırlandıran bir tunning parametresidir. Bu nedenle C tolere edilebilecek olan yanlış sınıflandırmaya izin vermektedir.
+
+## **Support Vector Classifier**
+
+```{r, warning=FALSE, out.width="100%", out.height="40%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_8.png")
+
+```
+
+-   Eğer c = 0 olarak belirlenirse, buna bağlı olarak tüm $\epsilon$ slack variable'larda 0 değerini alacak ve artık basit bir maximal margin classifier problemine geçilmiş olunacaktur.
+
+-   C değeri ne kadar büyük olursa gözlemlerin yanlış sınıflandırımasına o kadar fazla izin vermiş olacağız. Dolayısıya marginimiz daha geniş olacak.
+
+-   C parametresi ne kadar küçük olursa yanlış sınıflandırmalara o kadar az izin vermiş olacağız, dolayısıyla marginimiz da o kadar dar olacaktr.
+
+## **Support Vector Classifier - *'C' Parametresi***
+
+```{r, warning=FALSE, out.width="100%", out.height="90%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_9.png")
+
+```
+
+## **Lineer Sınıflandırılamayan Veriler *(Support Vector Machine)***
+
+Support Vector Machine, support vector'un genişletilmiş halidir.
+
+SVM değişken uzayının genişlemesini sağlayıp Kernel'lar kullanarak orijinal uzayda lineer olmayan sınıflandırmalara olanak sağlar.
+
+## **Support Vector Machine**
+
+Support vectoru doğrusal olmayan karar yüzeyine/düzlemine genişletmek için ilk olarak; veriler doğrusal olmayan bir dönüşüm olan $\phi$(x) aracılığıyla başka bir vektör uzayına eşlenir.
+
+Elde edilen bu yeni vektör uzayına özellik uzayı denir ve genellikle boyutluluğu orijinal girdi uzayından çok daha yüksektir (2 yerine 3 boyutlu vb.). Bu da verilerin daha doğru ve kolay bir biçimde sınıflandırılmasını sağlar.
+
+## **Support Vector Machine**
+
+```{r, warning=FALSE, out.width="100%", out.height="90%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_11.png")
+
+```
+
+## **Support Vector Machine**
+
+Dönüşüm sonrasında yeni vektör uzayında SVM algoritması kullanılarak maxima margin hyperplane veya soft margin hyperplane belirlenmeye çalışılır.
+
+```{r, warning=FALSE, out.width="100%", out.height="90%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_10.png")
+
+```
+
+## **Support Vector Machine**
+
+Aslında buradaki optimizasyon problemi çözüldüğünde gözlemlerin gerçek değerlerinin değil iç çarpımlarının (inner product) modele dahil olduğu belirlenir. Yukarıdaki optimizasyon problemi çözüldüğünde elde edilen lineer svm fonksiyonu aşağıdaki gibidir.
+
+-   $f(x) = sign(\sum_{i j = 1}^{M}a_{i}y_{i}(x_{i}x_{j})+b)$
+
+Ancak dönüşüm yapıldığı için fonksiyon aşağıdaki gibi ifade edilecektir;
+
+```{r, warning=FALSE, out.width="100%", out.height="90%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_12.png")
+
+```
+
+## **Support Vector Machine**
+
+-   Yüksek boyutlu özellik uzayında çalışmak karmaşık fonksiyonların ifade edilmesini sağlar, ancak özellikle geniş vektörler hesaplama sorunlarına yol açarken, yüksek boylutluluk da overfitting sorununa neden olabilir.
+
+-   Yüksek boyutluluğun neden olduğu bu sorunlara yönelik **Kernel fonksiyonu** kullanılabilir.
+
+-   Kernel, orijinal veri noktalarının özellik uzayı eşlemelerinin **nokta çarpımını döndüren** bir fonksiyondur.
+
+-   Bir kernel fonksiyonu uygulandığında, özellik uzayında öğrenme $\phi$'nin açık bir şekilde değerlendirilmesini gerektirmez. Böylelikle biz yukarıdaki formülü uygulayarak dönüşüm yapmadan maximal ya da soft margin hyperplane rahatlıkla elde edebilir.
+
+## **Support Vector Machine**
+
+Kernel kullandığında fonksiyon aşağıdaki şekilde ifade edilir.
+
+-   $f(x) = sign(\sum_{i j = 1}^{M}a_{i}y_{i}K(x_{i},x_{j})+b)$
+
+## **Kernel Trick Türleri**
+
+-   **1. Lineer Kernel** = Doğrusal bir ayırım sağlar. Bu nedenle aslında lineer kernel bize support vector classifier'ı vermektedir.
+
+    -   $K(X_{i}, X_{i}') = \sum_{j = 1}^{p}X_{ij}.X_{i'j}$
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_14.png")
+
+```
+
+## **Kernel Trick Türleri**
+
+-   **2. Polynomial Kernel** = Lineer kernel yanı sıra daha esnek bir hyperplane oluşturur. Orjinal özellik uzayı yerine daha yüksek boyutlu bir örneklem uzayında bir destek vektör sınıflandırıcısının elde edilmesi anlamına gelir.
+
+    -   $K(X_{i}, X_{i}') = (1 + \sum_{j = 1}^{p}X_{ij}.X_{i'j})^d$
+
+Yukarıdaki formülde d her zaman pozitif bir değer alır ve d'nin artırılması hyperplane'nin esnekliğini ayarlar.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_13.png")
+
+```
+
+## **Kernel Trick Türleri**
+
+-   **3. Radial Kernel** = Lineer kernel yanı sıra daha esnek bir hyperplane oluşturur. Orjinal özellik uzayı yerine daha yüksek boyutlu bir örneklem uzayında bir destek vektör sınıflandırıcısının elde edilmesi anlamına gelir.
+
+    -   $K(X_{i}, X_{i}') = exp(-\gamma \sum_{j = 1}^{p}(X_{ij}.X_{i'j})^2)$
+
+Yukarıdaki formülde $\gamma$ her zaman pozitif bir değer alır ve $\gamma$'nın artırılması hyperplane'nin esnekliğini ayarlar.
+
+```{r, warning=FALSE, out.width="100%", out.height="60%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/sekil_15.png")
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Nonlinear veri setinin oluşturulması
+
+```{r cars, echo = TRUE}
+set.seed(1)
+x=matrix(rnorm (200*2) , ncol=2)
+x[1:100,]=x[1:100,]+2
+x[101:150 ,]=x[101:150,]-2
+y=c(rep(1,150) ,rep(2,50))
+dat=data.frame(x=x,y=as.factor(y))
+```
+
+## Support Vector Machine *Uygulama*
+
+Nonlinear veri setinin oluşturulması
+
+```{r, echo=TRUE, eval=TRUE, out.width="100%", out.height="80%"}
+
+plot(x, col=y)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Veri setinin test ve train olarak ikiye ayrılması
+
+\small
+
+```{r, echo=TRUE, eval=TRUE, out.width="80%", out.height="80%"}
+
+set.seed(123)
+smp_size <- floor(0.75 * nrow(dat))
+train_ind <- sample(nrow(dat), size = smp_size, replace = FALSE)
+train_dnm_ders <- dat[train_ind, ]
+test_dnm_ders <- dat[-train_ind, ]
+
+table(train_dnm_ders$y)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+SVM fonksiyonu **e1071** kütüphenesinde yer almaktadır.
+
+```{r, echo=TRUE, eval=FALSE}
+
+library("e1071")
+
+```
+
+```{r, echo=TRUE, eval=TRUE}
+
+svm_radial <- e1071::svm(train_dnm_ders$y ~., 
+                     data = train_dnm_ders,
+                     kernel = "radial", 
+                     gamma = 1, 
+                     cost = 1)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE}
+
+summary(svm_radial)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+```{r echo=TRUE, eval=TRUE}
+
+plot(svm_radial , train_dnm_ders)
+
+
+```
+
+## Support Vector Machine *Uygulama*
+
+C ve $\gamma$ parametrellerinin Cross-Validation İle Belirlenmesi
+
+```{r echo=TRUE, eval=TRUE}
+
+set.seed(123)
+tune.out=e1071::tune(e1071::svm , 
+                     y~., 
+                     data=train_dnm_ders,
+                     kernel ="radial",
+                     ranges=list(cost=c(0.1,1,10,100,1000),
+                                 gamma=c(0.5,1,2,3,4) ))
+
+```
+
+## Support Vector Machine *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+summary (tune.out)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+bestparamet <-  tune.out$best.parameters
+bestparamet
+
+bestmodel <- tune.out$best.model
+bestmodel
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Train Prediction
+
+```{r, echo=TRUE, eval=TRUE}
+
+table(train_dnm_ders$y)
+pred_radial <- stats::predict(bestmodel, train_dnm_ders)
+table(predict = pred_radial, train_dnm_ders$y)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Train Prediction
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+caret::confusionMatrix(train_dnm_ders$y, pred_radial)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Test Prediction
+
+```{r, echo=TRUE, eval=TRUE}
+
+table(test_dnm_ders$y)
+pred_radial_test <- stats::predict(bestmodel, test_dnm_ders)
+table(predict = pred_radial_test, test_dnm_ders$y)
+
+```
+
+## Support Vector Machine *Uygulama*
+
+Test Prediction
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+caret::confusionMatrix(test_dnm_ders$y, pred_radial_test)
+
+```
+
+```{r, echo=FALSE}
+
+library(tree)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+\small
+
+```{r, echo=TRUE, eval=TRUE}
+
+tree_ders <- tree::tree(train_dnm_ders$y~., train_dnm_ders)
+summary(tree_ders)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+```{r, echo=TRUE, eval=TRUE}
+
+plot(tree_ders)
+text(tree_ders, pretty = 0)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+```{r, echo=TRUE, eval=TRUE}
+
+tree_ders_pred <- predict(tree_ders, train_dnm_ders, 
+                          type = "class")
+table(tree_ders_pred, train_dnm_ders$y)
+
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+caret::confusionMatrix(train_dnm_ders$y, tree_ders_pred)
+
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+Cross-Validation
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+set.seed(123)
+cros_valid <- tree::cv.tree(tree_ders, FUN = prune.misclass)
+cros_valid
+
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+Cross-Validation
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE, out.height="80%", out.width="80%"}
+
+par(mfrow=c(1,2))
+plot(cros_valid$size, cros_valid$dev, type = "b")
+plot(cros_valid$k, cros_valid$dev, type = "b")
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+Cross-Validation
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE, out.height="80%", out.width="80%"}
+
+prune_ders <- tree::prune.misclass(tree_ders, best = 4)
+summary(prune_ders)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+```{r, echo=TRUE, eval=TRUE}
+
+plot(prune_ders)
+text(prune_ders, pretty = 0)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+```{r, echo=TRUE, eval=TRUE}
+
+tree_ders_pred2 <- predict(prune_ders, train_dnm_ders, type = "class")
+table(tree_ders_pred2, train_dnm_ders$y)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+caret::confusionMatrix(train_dnm_ders$y, tree_ders_pred2)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+Test Prediction
+
+```{r, echo=TRUE, eval=TRUE}
+
+tree_ders_pred3 <- predict(prune_ders, test_dnm_ders, type = "class")
+table(tree_ders_pred3, test_dnm_ders$y)
+
+```
+
+## Sınıflandırma Ağaçları *Uygulama*
+
+\scriptsize
+
+```{r, echo=TRUE, eval=TRUE}
+
+caret::confusionMatrix(test_dnm_ders$y, tree_ders_pred3)
+
+```
+
+## TRAIN SONUCLARININ KARSILASTIRILMASI
+
+::: columns
+::: {.column width="50%"}
+|      *SVM*       | ***Truth*** | ***Truth*** |
+|:----------------:|:-----------:|:-----------:|
+|                  | **Class 1** | **Class 2** |
+| ***Prediction*** |             |             |
+|   **Class 1**    |     100     |      7      |
+|   **Class 2**    |      8      |     35      |
+:::
+
+::: {.column width="50%"}
+|       *CT*       | ***Truth*** | ***Truth*** |
+|:----------------:|:-----------:|:-----------:|
+|                  | **Class 1** | **Class 2** |
+| ***Prediction*** |             |             |
+|   **Class 1**    |     99      |      4      |
+|   **Class 2**    |      9      |     38      |
+:::
+:::
+
+## TEST SONUCLARININ KARSILASTIRILMASI
+
+::: columns
+::: {.column width="50%"}
+|      *SVM*       | ***Truth*** | ***Truth*** |
+|:----------------:|:-----------:|:-----------:|
+|                  | **Class 1** | **Class 2** |
+| ***Prediction*** |             |             |
+|   **Class 1**    |     39      |      2      |
+|   **Class 2**    |      3      |      6      |
+:::
+
+::: {.column width="50%"}
+|       *CT*       | ***Truth*** | ***Truth*** |
+|:----------------:|:-----------:|:-----------:|
+|                  | **Class 1** | **Class 2** |
+| ***Prediction*** |             |             |
+|   **Class 1**    |     35      |      1      |
+|   **Class 2**    |      7      |      7      |
+:::
+:::
+
+## ALGORİTMALARIN KARŞILAŞTIRILMASI
+
+\small
+
+|           |           | Train Set |           |           | Test Set  |           |
+|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+| **Model** | **Accr.** | **Sens.** | **Spec.** | **Accr.** | **Sens.** | **Spec.** |
+|    SVM    |   0.900   |   0.934   |   0.814   |   0.900   |   0.951   |   0.666   |
+|    CT     |   0.913   |   0.961   |   0.808   |   0.840   |   0.972   |   0.500   |
+
+## **KAYNAKÇA**
+
+Cherkassky, V., & Ma, Y. (2004). Practical selection of SVM parameters and noise estimation for SVM regression. Neural networks, 17(1), 113-126.
+
+James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). An Introduction to Statistical Learning with Applications in R. New York, NY: Springer.
+
+Mammone, A., Turchi, M., & Cristianini, N. (2009). Support vector machines. Wiley Interdisciplinary Reviews: Computational Statistics, 1(3), 283-289.
+
+Widodo, A., & Yang, B. S. (2007). Support vector machine in machine condition monitoring and fault diagnosis. Mechanical systems and signal processing, 21(6), 2560-2574.
+
+Zhang, R., & Wang, W. (2011). Facilitating the applications of support vector machine by using a new kernel. Expert systems with applications, 38(11), 14225-14230.
+
+
+## **TEŞEKKÜRLER...** 
+
+```{r, warning=FALSE, out.width="120%", out.height="100%"}
+
+knitr::include_graphics("C:/Users/vkaranibaris/Desktop/Denetimli Dersi/Support Vector Machine/thanks.png")
+
+```
+
+
+
+
+
