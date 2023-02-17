@@ -322,7 +322,6 @@ lines(x,fun, col = 1, lwd = 2) # adding density line with low-level function lin
 # Histograms can be difficult to interpret for large datasets, or when there is a high degree of variation in the data.
 
 
-
 ###############
 ### Boxplot ###
 ###############
@@ -371,3 +370,41 @@ boxplot(iris$Sepal.Width~iris$Species, # group by species
         horizontal = T)
 abline(v = mean(iris$Sepal.Width), lty = 2) # adding horizontal line at the mean of sepal.width
 text(3.1, 0.5, expression(bar(x))) # adding /xbar
+
+##############
+### plot() ###
+##############
+
+# In base R, it is possible to draw both line and scatterplot with the plot() function.
+
+###################
+### Scatterplot ###
+###################
+
+# A scatter plot is a type of graph that displays the relationship between two continuous variables. 
+# Each point on the plot represents a single observation, with the x-axis representing the values of one variable and the y-axis representing the values of the other variable.
+
+# Here is a basic scatterplot with plot() function:
+plot(mtcars$mpg, mtcars$hp)
+
+# Scatter plots have several advantages and disadvantages. Some of these include:
+
+# Advantages
+  
+# Provides a visual representation of the relationship between two variables.
+# Shows the presence or absence of a relationship between the two variables.
+# Helps in identifying outliers, trends, and patterns.
+# Provides information about the direction and strength of the relationship between the variables.
+
+# Disadvantages
+  
+# Scatter plot can only show the relationship between two variables.
+# May be difficult to interpret when there are a large number of observations.
+# The scatter plot may not always show the true nature of the relationship between the variables.
+# Correlation does not imply causation, and it is important to be cautious when interpreting the relationship shown in a scatter plot.
+
+#################
+### line plot ###
+#################
+
+
