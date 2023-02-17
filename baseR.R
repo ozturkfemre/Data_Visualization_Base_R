@@ -18,9 +18,6 @@
 # At this point, it needs to be noted that the package `ggplot2`, which will be explained later in this project, is built around the concept of "grammar of graphics", which means that it provides a set of rules for building plots by combining basic building blocks or components.
 # It is possible to think low-level functions as components in the `ggplot2` package.
 
-############################
-### High Level Functions ###
-############################
 
 # There are five high-level plotting functions in the base R. There functions can be listed as follows:
 
@@ -29,6 +26,22 @@
 # hist() 
 # boxplot() 
 # plot() 
+
+# There are five high-level plotting functions in the base R. There functions can be listed as follows:
+
+# text()
+# points() 
+# lines() 
+# legend()  
+# abline() 
+# arrows() 
+# symbols()
+
+# I think there is one thing that should be mentioned at this point. 
+# High-level plotting functions can create a plot by themselves, while low-level plotting functions must have a high-level function in order to work.
+
+
+# While showing each high-level function, I will try to explain the working logic of these two types of functions by adding one or more low-level functions.
 
 ###############
 ### Barplot ###
@@ -124,6 +137,32 @@ barplot(let2, xlab = "X axis",
         legend.text = rownames(let2),
         xlim = c(0,14),
         beside = T) # for clustered barplot
+
+##################################################
+### barplot() with a low-level function text() ###
+##################################################
+
+# I will use `quakes` dataset
+b <- seq(4,6.5, by=0.5) # setting bin widths
+
+c <- cut(quakes$mag, breaks = b, right = F) # where to cut the values
+
+t <- table(c)
+
+# this is how it looks like in a basic form
+barplot(t)
+
+# lets rock this!
+barplot(t, main = "earthquake counts by magnitude", xlab = "madnitude", 
+        ylab = "Frequency",
+        col = "chocolate",
+        border = "khaki1",
+        ylim = c(0,500))
+text(0.7, 400,t[1])
+text(1.85,450,t[2])
+text(3.15,185,t[3])
+text(4.25,55,t[4])
+text(5.5,30,t[5])
 
 
 #################
@@ -248,3 +287,87 @@ hist(mpg,
      col = "burlywood4",
      border = "burlywood2",
      axes = F, labels = T)
+
+
+################################################
+### hist() with a low-level function lines() ###
+################################################
+
+# With the low-level function density() it is possible to draw a density line in the histogram, which can give better information about the distribution of the data.
+
+# Lets simulate a data for this example:
+set.seed(1212)
+x <- rnorm(1000, 10, 4)
+x <- sort(x, decreasing = F)
+fun <- dnorm(x, mean = mean(x), sd = sd(x)) # calculating density
+hist(x, main = "histogram of x", ylab = "Density", xlab = "x",col="grey",
+     border="black", probability = T, ylim = c(0, max(fun))) # drawing histogram with high-level function hist()
+lines(x,fun, col = 1, lwd = 2) # adding density line with low-level function lines()
+
+
+# Histograms have several advantages and disadvantages. Some of these include:
+
+# Advantages
+  
+# Histograms are a useful tool for visualizing the distribution of a dataset. They provide a quick and easy way to see the range, shape, and central tendency of the data.
+# Histograms are flexible and can be used to visualize a wide range of data types, including continuous, discrete, and categorical data.
+# Histograms can be used to identify outliers and unusual observations that may be skewing the distribution of the data.
+# Histograms can be easily created in R and other statistical software packages, and can be customized with a variety of options, such as bin width, color, and labels.
+
+# Disadvantages
+  
+# The shape and appearance of a histogram can be sensitive to the choice of bin width. Different bin widths can result in different visualizations of the same data, which can make it difficult to compare histograms.
+# Histograms can be sensitive to the choice of the number of bins. Too few bins can result in a loss of information about the distribution, while too many bins can create a noisy and difficult-to-interpret histogram.
+# Histograms can be misleading if the data are not properly preprocessed or if the data are not representative of the underlying population.
+# Histograms can be difficult to interpret for large datasets, or when there is a high degree of variation in the data.
+
+
+
+###############
+### Boxplot ###
+###############
+
+# A boxplot is a graphical representation of the distribution of a dataset. 
+# It is a standardized way of displaying the distribution of data based on five summary statistics: the minimum value, the first quartile (Q1), the median, the third quartile (Q3), and the maximum value.
+
+# Here are some of the most commonly used arguments of the boxplot() function: 
+
+# formula: a formula describing the variable(s) to be plotted.
+# data: the data frame containing the variables to be plotted.
+# subset: an optional vector specifying a subset of the data to be plotted.
+# na.action: a function to handle missing data.
+# names: a character vector giving the names of the variables to be plotted.
+# horizontal: a logical value indicating whether to plot the boxes horizontally or vertically.
+# notch: a logical value indicating whether to draw a notch around the median of each box.
+# varwidth: a logical value indicating whether the boxes should be drawn with widths proportional to the square root of the number of observations in each group.
+# outline: a logical value indicating whether to draw individual points outside of the whiskers.
+# col: the color of the boxes, whiskers, and outliers.
+# border: the color of the border around the boxes.
+# boxwex: the width of the boxes.
+# at: a numeric vector giving the locations of the boxes along the x-axis.
+# add: a logical value indicating whether to add the boxplot to an existing plot.
+
+# I will use mpg variable again to show how basit boxplot looks like: 
+boxplot(mpg)
+
+# here how it looks like if I add some of the arguments to the function:
+
+boxplot(mpg,
+        col = "chocolate",
+        border = "khaki4",
+        notch = T,
+        horizontal = T,
+        varwidth = T)
+
+
+#############################################################
+### boxplot() with a low-level function text() & abline() ###
+#############################################################
+
+# I will use `iris` dataset for this example
+boxplot(iris$Sepal.Width~iris$Species, # group by species
+        main = "Sepal widths by species",
+        col = c("red", "blue", "gold"),
+        horizontal = T)
+abline(v = mean(iris$Sepal.Width), lty = 2) # adding horizontal line at the mean of sepal.width
+text(3.1, 0.5, expression(bar(x))) # adding /xbar
