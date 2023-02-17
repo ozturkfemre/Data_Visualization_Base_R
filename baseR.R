@@ -467,6 +467,7 @@ plot(mpg,
 ###############################################
 ### plot() with low-level function points() ###
 ###############################################
+# I will use a partial function to demonstrate the use of these two functions.
 
 x1 <- seq(-2,-1.01, len = 100)
 y1 <- x1^2
@@ -475,6 +476,72 @@ y2 <- rep(1, 100)
 x3 <- seq(1.01, 2, len = 100)
 y3 <- 2* x3 -1
 
-plot(x1,y1, xlim = c(-2,2), ylim = c(0,5))
-points(x2,y2)
-points(x3,y3)
+plot(x1,y1, xlim = c(-2,2), ylim = c(0,5), type = "l", lwd = 3, col = "tomato2", bty = "L", xlab = "", ylab = "", main = "plot() & points()")
+points(x2,y2,type = "l", lwd = 3, col = "chocolate4")
+points(x3,y3,type = "l", lwd = 3, col = "lightsalmon")
+
+#############################################################
+### plot() with a low-level function lines() and legend() ###
+#############################################################
+
+# For this example, I will simulate chisquare distributed vectors with different degrees of freedom.
+x <- seq(0,60, len=1000)
+
+df <- c(5,10,20,30) # setting degrees of freedom
+color <- c("red","blue", "green",  "orange2") # setting line colors
+title <- paste("Chi-Square, df=", df, sep = "" ) # setting titles
+line_type <- c(2,1,1,1) # setting line types
+line_width <- c(1,1,1,1) # setting line widths
+
+plot(x,xlim=c(0,60), ylim = c(0,0.15), main = "Different Chi-Square Distributions", ylab="Density", type = "n") # drawing empty plot
+for (i in 1:length(df) ) { # for loop to draw line for each df
+  x <- seq(0,60, len=1000)
+  fx <- dchisq(x, df = df[i])
+  lines(x, fx, main = title[i], xlab = "x", ylab ="Density", col=color[i], lwd = line_width[i], lty = line_width[i])
+}
+legend("topright", legend = title, col=color, lty = line_type) # legend to distinguish lines
+
+###########
+### par ###
+###########
+
+# The par() function is a built-in function in R that is used to set or retrieve graphical parameters.
+# These parameters control the appearance of the graphics such as the size of the plotting region, the margins, the axes, the color, and more.
+
+# Here are some of the most common arguments for the par() function:
+  
+# mfrow and mfcol: specify the number of rows and columns of plots to be created on a page. mfrow creates plots in a matrix format, filling rows first, while mfcol fills columns first.
+# mar: the margins of the plotting region in the form c(bottom, left, top, right).
+# oma: outer margins of the plotting region, i.e., the space between the edge of the plotting region and the main title, axis labels, and so on, in the form c(bottom, left, top, right).
+# pty: the type of plot region to be used, either "s" (square) or "m" (maximal).
+# xaxs and yaxs: the style of the axis ranges. A value of "r" (default) indicates that the axis limits should be rounded to the nearest integer multiple of the tick interval, while a value of "i" indicates that the axis limits should be exactly at the data range limits.
+# col: the color palette to be used for subsequent plots. 
+# lty: the default line type to be used for subsequent plots.
+# lwd: the default line width to be used for subsequent plots.
+# bg: background of the plot
+# cex: the size of the text used for plot symbols and axis labels.
+# pch: the plotting character to be used for plot symbols.
+# las: the orientation of axis labels. A value of 0 indicates horizontal labels, while 1, 2, and 3 indicate labels perpendicular to the axis.
+# log: whether the x- and/or y-axis should be plotted on a logarithmic scale. A value of "x" indicates a logarithmic x-axis, while "y" indicates a logarithmic y-axis, and "xy" indicates a logarithmic scale for both axes.
+# xlim and ylim: the limits of the x- and y-axis, respectively.
+# xaxt and yaxt: the style of the axis ticks. A value of "n" indicates that no axis should be drawn, while "s" indicates a small axis, "m" indicates a medium axis, and "l" indicates a large axis.
+
+par(bg="cornsilk", 
+    mfrow = c(2,2), 
+    lwd = 4, 
+    col = "burlywood4", 
+    pty="m", 
+    oma = c(0,0,0,0)
+    )
+
+for (i in 1:length(df) ) {
+  x <- seq(0,60, len=1000)
+  fx <- dchisq(x, df = df[i])
+  plot(x, fx, main = title[i], xlab = "x", ylab ="Density", col=color[i], type = "l" , lwd=2)
+}
+
+
+# IMPORTANT NOTE: 
+# The settings made with the par() function permanently change the graphics settings. For this reason, it is necessary to reset the graphics settings after each use. For this, the dev.off() command can be used.
+
+dev.off()
