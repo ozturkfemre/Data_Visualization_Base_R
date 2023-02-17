@@ -6,9 +6,6 @@
 # By presenting data in a visual format, data visualization can also help to reveal new connections and insights that might not be apparent from a purely numerical or textual analysis.
 # Effective data visualization allows viewers to quickly identify patterns, trends, and relationships within the data, and can be used to highlight key insights or communicate complex ideas. 
 
-##############
-### Base R ###
-##############
 
 # In base R, there are many functions that can be used to create different types of plots. 
 # Although there is no clear distinction between high-level and low-level functions, I like to divide functions as such.
@@ -47,7 +44,7 @@
 ### Barplot ###
 ###############
 
-# The barplot() function in base R is used to create bar charts, which are a type of graph that displays categorical data as rectangular bars with heights or lengths proportional to the values they represent.
+# Barplot is used to create bar charts, which are a type of graph that displays categorical data as rectangular bars with heights or lengths proportional to the values they represent.
 # By looking at the relative heights or lengths of the bars, it might be possible to quickly compare the values and identify any trends or patterns.
 # The barplot() function in base R has several arguments that can be used to customize the appearance and behavior of the resulting bar chart. 
 
@@ -263,7 +260,7 @@ hist(mpg, breaks = 2)
 # https://academic.oup.com/biomet/article-abstract/66/3/605/232642?redirectedFrom=fulltext
 
 
-# Here are some of the most commonly used arguments of pie() function:
+# Here are some of the most commonly used arguments of hist() function:
 
 # x: A vector of numeric values that specifies the data to be represented in the histogram.
 # breaks: A specification of the breakpoints (i.e., the edges of the bins) to use in the histogram. This can be a numeric vector, or a function such as breaks = "FD" to use the Freedman-Diaconis rule for determining the bin widths.
@@ -545,3 +542,5 @@ for (i in 1:length(df) ) {
 # The settings made with the par() function permanently change the graphics settings. For this reason, it is necessary to reset the graphics settings after each use. For this, the dev.off() command can be used.
 
 dev.off()
+
+https://r-graph-gallery.com/73-box-style-with-the-bty-function.html
