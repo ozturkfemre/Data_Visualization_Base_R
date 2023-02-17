@@ -1,10 +1,86 @@
 ### Data Visualization Project ###
 ##################################
 
+# Data visualization can be defined as the use of graphical or pictorial representations to present data in a way that makes it easier to understand, analyze, and communicate.
+# It involves the use of visual elements such as charts, graphs, and maps to help users better understand and interpret complex data sets. Data visualization is an important tool for exploratory data analysis, as well as for communicating results to others.
+# By presenting data in a visual format, data visualization can also help to reveal new connections and insights that might not be apparent from a purely numerical or textual analysis.
+# Effective data visualization allows viewers to quickly identify patterns, trends, and relationships within the data, and can be used to highlight key insights or communicate complex ideas. 
+
 ##############
 ### Base R ###
 ##############
 
+# In base R, there are many functions that can be used to create different types of plots. 
+# Although there is no clear distinction between high-level and low-level functions, I like to divide functions as such.
+# I believe that there are some functions which can be called as high-level plotting functions tend to provide a convenient way to create a specific type of plot with a relatively small amount of code.
+# On the other hand, there are some functions which can be called as low-level plotting functions provide more control and flexibility, but require more coding to create a plot.
+
+# At this point, it needs to be noted that the package `ggplot2`, which will be explained later in this project, is built around the concept of "grammar of graphics", which means that it provides a set of rules for building plots by combining basic building blocks or components.
+# It is possible to think low-level functions as components in the `ggplot2` package.
+
 ############################
 ### High Level Functions ###
 ############################
+
+# There are five high-level plotting functions in the base R. There functions can be listed as follows:
+
+# barplot() 
+# pie() 
+# hist() 
+# boxplot() 
+# plot() 
+
+###############
+### Barplot ###
+###############
+
+# The barplot() function in base R is used to create bar charts, which are a type of graph that displays categorical data as rectangular bars with heights or lengths proportional to the values they represent.
+# By looking at the relative heights or lengths of the bars, it might be possible to quickly compare the values and identify any trends or patterns.
+# The barplot() function in base R has several arguments that can be used to customize the appearance and behavior of the resulting bar chart. 
+
+# Here are some of the most commonly used arguments: 
+
+# height - a vector or matrix of values that represent the heights of the bars. This argument is required.
+# names.arg - a vector of names or labels for the bars. The length of this vector should be equal to the length of the height vector.
+# col - a vector of colors for the bars. The length of this vector should be equal to the length of the height vector.
+# border - the color of the borders of the bars. The default value is "black".
+# main - a main title for the plot.
+# xlab - a label for the x-axis.
+# ylab - a label for the y-axis.
+# legend.text - a vector of labels for the legend.
+# args.legend - a list of arguments to control the appearance of the legend.
+# width - the width of the bars. The default value is 0.5.
+# space - the amount of space between the bars. The default value is 1.
+# horiz - a logical value that controls the orientation of the bars. If TRUE, the bars are horizontal; if FALSE, they are vertical. The default value is FALSE.
+# density - the density of shading lines in the bars. The default value is 1.
+# angle - the angle of shading lines in the bars. The default value is 45.
+
+# Lets create a vector for barplot example:
+set.seed(111)
+x1 <- sample(LETTERS[1:5], size = 20, rep= T)
+let <- table(x1)
+
+# basic barplot() looks like the following:
+barplot(let)
+
+# here how it looks like if we add some of the arguments
+barplot(let, main = "Title of the plot",  
+        xlab = "X axis", 
+        ylab = "Y axis", 
+        horiz = T, 
+        col = c("red", "blue", "gray1", "navy", "gold"), # assigns colors by order
+        xlim = c(0,7), # limit values of the x axis
+        legend.text = c("Group 1", "Group 2", "Group 3", "Group 4", "Group 5")) # add legends by order
+
+
+########################
+### stacked bar plot ###
+########################
+
+# A stacked bar plot is a type of bar chart that displays multiple variables by stacking them on top of each other. 
+# Each bar in the chart represents a category, and the height or length of the bar represents the total value of the variables being stacked. 
+# The stacked bar plot breaks down the total value of each category into different segments, with each segment representing a different variable.
+
+
+
+
