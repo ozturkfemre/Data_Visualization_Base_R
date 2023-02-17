@@ -407,4 +407,59 @@ plot(mtcars$mpg, mtcars$hp)
 ### line plot ###
 #################
 
+# A line plot is a graph that displays data points connected by straight lines. 
+# The x-axis represents the independent variable, and the y-axis represents the dependent variable. 
 
+# Here is a basic line plot with plot() function:
+plot(mpg, type = "l")
+
+# Line plots have several advantages and disadvantages. Some of these include:
+
+# Advantages
+  
+# Line plots can show trends in data over time and provide insight into how the data changes.
+# They can also reveal patterns or fluctuations in the data that may not be immediately apparent from a table of numbers.
+# Line plots are easy to create and read, making them an effective way to communicate data to a wide audience.
+# They can be used to compare multiple sets of data on the same graph, allowing for easy visual comparison.
+
+# Disadvantages
+  
+# Line plots may not be appropriate for data that does not change over time.
+# They may not be useful for showing data with a large number of categories or data points.
+# Line plots can be misleading if the data is not plotted accurately or if the scale of the graph is not appropriate.
+# Line plots may not be useful for identifying outliers or extreme values in the data.
+
+# The arguments for the plot() function can vary depending on the type of graph being created. 
+# Here are some common arguments for the plot() function:
+
+# x and y: the data to be plotted on the x-axis and y-axis, respectively. 
+# type: the type of plot to be created. For example, "p" creates a scatter plot with points, "l" creates a line plot, "b" creates both points and lines, and "h" creates a histogram.
+# main: the main title of the plot.
+# xlab and ylab: the labels for the x-axis and y-axis, respectively.
+# xlim and ylim: limits for the x-axis and y-axis, respectively.
+# col: the color to be used for the points or lines
+# pch: type of symbol to be used for the points
+# lty: Type of line 
+# bty: type of box
+
+
+# Here is a fancy example of the plot() function for scatter plot:
+plot(mtcars$mpg, mtcars$hp,
+     main = "Title of the plot",
+     xlab = "X axis",
+     ylab = "Y axis",
+     col = "chocolate",
+     pch = "x",
+     bty = "n"
+     )
+
+# Here is a fancy example of the plot() function for line plot:
+plot(mpg, 
+     type = "l",
+     main = "Title of the plot",
+     xlab = "X axis",
+     ylab = "Y axis",
+     col = "chocolate",
+     lty = "dashed",
+     bty = "L" 
+     )
