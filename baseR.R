@@ -463,3 +463,18 @@ plot(mpg,
      lty = "dashed",
      bty = "L" 
      )
+
+###############################################
+### plot() with low-level function points() ###
+###############################################
+
+x1 <- seq(-2,-1.01, len = 100)
+y1 <- x1^2
+x2 <- seq(-1,1, len = 100)
+y2 <- rep(1, 100) 
+x3 <- seq(1.01, 2, len = 100)
+y3 <- 2* x3 -1
+
+plot(x1,y1, xlim = c(-2,2), ylim = c(0,5))
+points(x2,y2)
+points(x3,y3)
